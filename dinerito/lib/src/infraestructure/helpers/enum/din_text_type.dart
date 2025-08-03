@@ -1,0 +1,4 @@
+enum DinTextType {
+  text,
+  password
+}

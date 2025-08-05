@@ -4,13 +4,12 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
+### Antes de ejecutar la app en local, asegurate de:
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Crea y agregar las variables de entorno en un archivo .env `/lib/src/configuration/env/dev/.env`
+2. Generar las variables de entorno con el siguiente comando:
+    dart run build_runner clean && dart run build_runner build --delete-conflicting-outputs
+3. Configura el proyecto para que apunte a las variables dev en la ruta: 
 
 ## Assets
 

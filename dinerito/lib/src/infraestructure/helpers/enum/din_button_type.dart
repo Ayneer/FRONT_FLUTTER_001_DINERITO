@@ -1,4 +1,0 @@
-enum DinButtonType {
-  primary,
-  secondary
-}

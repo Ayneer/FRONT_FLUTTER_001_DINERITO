@@ -1,7 +1,9 @@
 class DinSize {
   static const double xSmall = 10;
+  static const double xmSmall = 15;
   static const double small = 20;
   static const double medium = 30;
+  static const double xMedium = 35;
   static const double large = 40;
   static const double xLarge = 50;
 

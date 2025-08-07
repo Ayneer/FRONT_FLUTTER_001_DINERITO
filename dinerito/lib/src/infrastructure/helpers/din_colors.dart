@@ -14,4 +14,5 @@ class DinColors {
   static final Color tertiaryColorOpacity = const Color(0xFF000000).withOpacity(0.2);
  
   static const Color errorColor = Color(0xFFFF9898);
+  static const Color successColor = Color.fromARGB(255, 46, 210, 120);
 }

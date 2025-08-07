@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../../infrastructure/helpers/enum/din_text_type.dart';
+import '../../../../../helpers/utils.dart';
 import '../../../../../widgets/din_button.dart';
 import '../../../../../widgets/din_input.dart';
 
@@ -32,10 +33,15 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           DinInput(
-            title: 'Usuario',
-            hintText: 'mi_usuario',
+            title: 'Correo',
+            hintText: 'mi_usuario@dominio.com',
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String email) => Util.emailValidator(email)
+                    ? null
+                    : 'Ingrese un correo valido.',
+              );
             },
             controller: usernameController,
           ),
@@ -47,7 +53,15 @@ class _LoginFormState extends State<LoginForm> {
             hintText: '*******',
             type: DinTextType.password,
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String password) {
+                  const int minSize = Util.minPasswprdSize;
+                  return password.length < minSize
+                      ? 'Debe ingresar al menos $minSize caracteres en la contraseña.'
+                      : null;
+                },
+              );
             },
             controller: passwordController,
           ),
@@ -74,20 +88,20 @@ class _LoginFormState extends State<LoginForm> {
     final FormState? formState = _formKey.currentState;
     if (formState != null && formState.validate()) {
       await widget.onLogin(
-        username: usernameController.text,
-        password: passwordController.text,
+        username: usernameController.text.trim(),
+        password: passwordController.text.trim(),
       );
     }
   }
 
   String? _generalStringValidation({
     String? value,
-    String? Function(String?)? validate,
+    String? Function(String)? validate,
   }) {
     if (value == null || value.trim().isEmpty) {
       return 'Ingresa un texto valido';
     }
-    return validate != null ? validate(value) : null;
+    return validate != null ? validate(value.trim()) : null;
   }
 
   bool enableLoginButton() {

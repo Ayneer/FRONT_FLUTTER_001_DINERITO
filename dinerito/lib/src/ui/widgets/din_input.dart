@@ -17,7 +17,7 @@ class DinInput extends StatelessWidget {
   final String? title;
   final DinTextType type;
   final String? Function(String?)? validator;
-  final String? Function(String?)? onChanged;
+  final void Function(String?)? onChanged;
   final TextEditingController? controller;
 
   @override

@@ -9,11 +9,13 @@ class DinText extends StatelessWidget {
     super.key,
     this.style,
     this.isMoney = false,
+    this.color,
   });
 
   final String text;
   final TextStyle? style;
   final bool isMoney;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,10 @@ class DinText extends StatelessWidget {
           )
         : Text(
             text,
-            style: style ?? DinTypography.textLightStyle1,
+            style: style ??
+                DinTypography.textLightStyle1.copyWith(
+                  color: color,
+                ),
           );
   }
 }

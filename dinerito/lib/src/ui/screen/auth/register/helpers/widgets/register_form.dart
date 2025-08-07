@@ -1,8 +1,10 @@
 import 'package:dinerito/src/ui/widgets/din_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../infrastructure/helpers/din_colors.dart';
 import '../../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../../infrastructure/helpers/enum/din_text_type.dart';
+import '../../../../../helpers/utils.dart';
 import '../../../../../widgets/din_button.dart';
 import '../../../../../widgets/din_input.dart';
 
@@ -30,6 +32,9 @@ class _RegisterFormState extends State<RegisterForm> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  bool goodPassSize = false;
+  bool goodSpecialCharacter = false;
+  bool goodCapitalLetter = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,18 @@ class _RegisterFormState extends State<RegisterForm> {
             title: 'Nombres',
             hintText: 'Tus nombres',
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String names) {
+                  final List<String> allNames = names.split(' ');
+                  for (var name in allNames) {
+                    if (!Util.onlyStringValidator(name)) {
+                      return 'Ingrese nombres validos, sin caracteres especiales.';
+                    }
+                  }
+                  return null;
+                },
+              );
             },
             controller: firstNameController,
           ),
@@ -49,7 +65,18 @@ class _RegisterFormState extends State<RegisterForm> {
             title: 'Apellidos',
             hintText: 'Tus apellidos',
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String names) {
+                  final List<String> allNames = names.split(' ');
+                  for (var name in allNames) {
+                    if (!Util.onlyStringValidator(name)) {
+                      return 'Ingrese apellidos validos, sin caracteres especiales.';
+                    }
+                  }
+                  return null;
+                },
+              );
             },
             controller: lastNameController,
           ),
@@ -57,16 +84,31 @@ class _RegisterFormState extends State<RegisterForm> {
             title: 'Correo electronico',
             hintText: 'tu_correo@dominio.com',
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String email) => Util.emailValidator(email)
+                    ? null
+                    : 'Ingrese un correo valido.',
+              );
             },
             controller: emailController,
           ),
           DinInput(
             title: 'Contraseña',
             hintText: 'Crea una contraseña segura',
+            type: DinTextType.password,
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String password) {
+                  const int minSize = Util.minPasswprdSize;
+                  return password.length < minSize
+                      ? 'Debe ingresar al menos $minSize caracteres en la contraseña.'
+                      : null;
+                },
+              );
             },
+            onChanged: (String? password) => validatePassword(),
             controller: passwordController,
           ),
           const SizedBox(
@@ -77,37 +119,58 @@ class _RegisterFormState extends State<RegisterForm> {
             hintText: 'Repite la misma contraseña',
             type: DinTextType.password,
             validator: (value) {
-              return _generalStringValidation(value: value);
+              return _generalStringValidation(
+                value: value,
+                validate: (String confirmPassword) {
+                  return passwordController.text.trim() != confirmPassword
+                      ? 'Las contraseñas no coinciden.'
+                      : null;
+                },
+              );
             },
             controller: confirmPasswordController,
           ),
           const SizedBox(
             height: DinSize.small,
           ),
-          const Column(
+          Column(
             children: [
-              Row(
+              const Row(
                 children: [
-                  Icon(Icons.check),
                   DinText('La contraseña debe cumplir con:'),
                 ],
               ),
               Row(
                 children: [
-                  Icon(Icons.check),
-                  DinText('Al menos 8 caracteres alfanumericos.'),
+                  showCheckIcon(goodPassSize),
+                  DinText(
+                    'Al menos ${Util.minPasswprdSize} caracteres alfanumericos.',
+                    color: goodPassSize
+                        ? DinColors.successColor
+                        : DinColors.errorColor,
+                  ),
                 ],
               ),
               Row(
                 children: [
-                  Icon(Icons.check),
-                  DinText('Al menos 1 caracter especial.'),
+                  showCheckIcon(goodSpecialCharacter),
+                  DinText(
+                    'Al menos 1 caracter especial.',
+                    color: goodSpecialCharacter
+                        ? DinColors.successColor
+                        : DinColors.errorColor,
+                  ),
                 ],
               ),
               Row(
                 children: [
-                  Icon(Icons.check),
-                  DinText('Al menos 1 caracter en mayuscula.'),
+                  showCheckIcon(goodCapitalLetter),
+                  DinText(
+                    'Al menos 1 caracter en mayuscula.',
+                    color: goodCapitalLetter
+                        ? DinColors.successColor
+                        : DinColors.errorColor,
+                  ),
                 ],
               ),
             ],
@@ -135,17 +198,17 @@ class _RegisterFormState extends State<RegisterForm> {
     final FormState? formState = _formKey.currentState;
     if (formState != null && formState.validate()) {
       await widget.onSignUp(
-        names: firstNameController.text,
-        lastNames: lastNameController.text,
-        email: emailController.text,
-        password: passwordController.text,
+        names: firstNameController.text.trim(),
+        lastNames: lastNameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
     }
   }
 
   String? _generalStringValidation({
     String? value,
-    String? Function(String?)? validate,
+    String? Function(String)? validate,
   }) {
     if (value == null || value.trim().isEmpty) {
       return 'Ingresa un texto valido';
@@ -154,14 +217,35 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   bool enableLoginButton() {
-    if (firstNameController.text.isEmpty ||
-        lastNameController.text.isEmpty ||
-        emailController.text.isEmpty ||
-        passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty) {
+    if (firstNameController.text.trim().isEmpty ||
+        lastNameController.text.trim().isEmpty ||
+        emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty ||
+        confirmPasswordController.text.trim().isEmpty) {
       return false;
     }
     return true;
+  }
+
+  void validatePassword() {
+    final String password = passwordController.text.trim();
+    setState(() {
+      goodPassSize = password.length < Util.minPasswprdSize ? false : true;
+      goodSpecialCharacter = Util.hasSpecialCharacter(password);
+      goodCapitalLetter = Util.hasCapitalLetter(password);
+    });
+  }
+
+  Icon showCheckIcon(bool isGood) {
+    return isGood
+        ? const Icon(
+            Icons.check,
+            size: DinSize.small,
+          )
+        : const Icon(
+            Icons.close,
+            size: DinSize.small,
+          );
   }
 
   @override

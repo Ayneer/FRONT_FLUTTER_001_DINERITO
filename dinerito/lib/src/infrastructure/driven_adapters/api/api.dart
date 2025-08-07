@@ -1,7 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
+import '../../../configuration/enum/env_enum.dart';
+import '../../../configuration/env/env.dart';
 import '../../helpers/enum/http_request_type.dart';
+import '../../models/api_response_model.dart';
 import '../../models/error_api_model.dart';
 
 class Api {
@@ -11,23 +14,28 @@ class Api {
 
   final bool withAuth;
   final dio = Dio(); // Puedes configurar headers por defecto si quieres
+  final env = Env.env;
 
   Future<Either<ErrorApiModel, Map<String, dynamic>>> call(
     String path, {
     required HttpRequestType method,
     required String codeApiError,
+    required ApiResponseModel mockResponse,
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
     try {
-      final response = await _sendRequest(
-        path,
-        method: method,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
+      dynamic response = mockResponse;
+      if (env != Enviroment.mock) {
+        response = await _sendRequest(
+          path,
+          method: method,
+          data: data,
+          queryParameters: queryParameters,
+          options: options,
+        );
+      }
       if (response.statusCode as int == 200) {
         return Right<ErrorApiModel, Map<String, dynamic>>(response.data);
       } else {

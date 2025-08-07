@@ -13,4 +13,11 @@ class LoginResponseModel {
       user: map['user'] as Map<String, dynamic>,
     );
   }
+
+  static Map<String, dynamic> toMap(LoginResponseModel object) {
+    return <String, dynamic>{
+      "token": object.token,
+      "user": object.user,
+    };
+  }
 }

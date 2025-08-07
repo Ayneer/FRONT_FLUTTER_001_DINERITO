@@ -8,7 +8,7 @@ import 'ui/router/auth/register_router.dart';
 import 'ui/router/home/home_router.dart';
 
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({
     super.key,
     required this.settingsController,
@@ -17,17 +17,27 @@ class MyApp extends StatelessWidget {
   final SettingsController settingsController;
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  
+  @override
+  void initState() {
+    super.initState();
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
     const Locale locale = Locale('es', 'CO');
     Future<bool> isLoggedIn() async {
       final token = await SecureStorageSession().getToken();
-      print('token');
-      print(token);
       return token != null;
     }
 
     return AnimatedBuilder(
-      animation: settingsController,
+      animation: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           scrollBehavior:
@@ -44,7 +54,7 @@ class MyApp extends StatelessWidget {
           title: 'any',
           theme: ThemeData(),
           // darkTheme: ThemeData.dark(),
-          themeMode: settingsController.themeMode,
+          themeMode: widget.settingsController.themeMode,
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.

@@ -9,7 +9,7 @@ A new Flutter project.
 1. Crea y agregar las variables de entorno en un archivo .env `/lib/src/configuration/env/dev/.env`
 2. Generar las variables de entorno con el siguiente comando:
     dart run build_runner clean && dart run build_runner build --delete-conflicting-outputs
-3. Configura el proyecto para que apunte a las variables dev en la ruta: 
+3. Configura el proyecto para que apunte a las variables dev en la ruta: `/lib/src/configuration/env/env.dart`
 
 ## Assets
 

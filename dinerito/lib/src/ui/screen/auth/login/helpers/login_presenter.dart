@@ -28,7 +28,7 @@ class LoginPresenter {
         _interface.showError(error.detail);
       },
       (LoginResponseModel response) {
-        _interface.setSesionToken(response.token);
+        _interface.setSession(response);
       },
     );
   }

@@ -1,4 +1,6 @@
+import '../../../../../infrastructure/models/auth/response/login_response_model.dart';
+
 abstract interface class LoginInterface {
-  setSesionToken(String token);
+  setSession(LoginResponseModel session);
   showError(String message);
 }

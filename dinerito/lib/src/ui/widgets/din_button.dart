@@ -1,3 +1,4 @@
+import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../infrastructure/helpers/din_colors.dart';
@@ -29,6 +30,7 @@ class DinButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.isDarkTheme;
     final bool onlyIcon = text.isEmpty && icon != null ? true : false;
 
     return SizedBox(
@@ -36,15 +38,22 @@ class DinButton extends StatelessWidget {
       width: width,
       child: _getButton(
         onlyIcon,
+        isDarkTheme,
       ),
     );
   }
 
-  Widget _getButton(bool onlyIcon) {
+  Widget _getButton(
+    bool onlyIcon,
+    bool isDarkTheme,
+  ) {
     return icon != null
         ? TextButton(
             onPressed: onPressed,
-            style: _getButtonStyle(onlyIcon),
+            style: _getButtonStyle(
+              onlyIcon,
+              isDarkTheme,
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,7 +65,7 @@ class DinButton extends StatelessWidget {
                         ),
                         child: Text(
                           text,
-                          style: _getButtonTextStyle(),
+                          style: _getButtonTextStyle(isDarkTheme),
                         ),
                       )
                     : const SizedBox.shrink(),
@@ -65,15 +74,21 @@ class DinButton extends StatelessWidget {
           )
         : TextButton(
             onPressed: onPressed,
-            style: _getButtonStyle(onlyIcon),
+            style: _getButtonStyle(
+              onlyIcon,
+              isDarkTheme,
+            ),
             child: Text(
               text,
-              style: _getButtonTextStyle(),
+              style: _getButtonTextStyle(isDarkTheme),
             ),
           );
   }
 
-  ButtonStyle _getButtonStyle(bool onlyIcon) {
+  ButtonStyle _getButtonStyle(
+    bool onlyIcon,
+    bool isDarkTheme,
+  ) {
     final Alignment alignment_ =
         onlyIcon ? Alignment.topCenter : Alignment.center;
     final DinButtonType type_ = onlyIcon ? DinButtonType.transparent : type;
@@ -82,7 +97,9 @@ class DinButton extends StatelessWidget {
       case DinButtonType.primary:
         return TextButton.styleFrom(
           alignment: alignment_,
-          backgroundColor: DinColors.primaryColor001,
+          backgroundColor: isDarkTheme
+              ? DinColors.primaryBG002
+              : DinColors.primaryBgColor003,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -92,7 +109,9 @@ class DinButton extends StatelessWidget {
         return TextButton.styleFrom(
           alignment: alignment_,
           padding: onlyIcon ? EdgeInsets.zero : null,
-          backgroundColor: DinColors.secondaryColor001,
+          backgroundColor: isDarkTheme
+              ? DinColors.primaryBG002
+              : DinColors.secondaryColor001,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -102,7 +121,9 @@ class DinButton extends StatelessWidget {
         return TextButton.styleFrom(
           alignment: alignment_,
           padding: onlyIcon ? EdgeInsets.zero : null,
-          backgroundColor: DinColors.primaryColor002,
+          backgroundColor: isDarkTheme
+              ? DinColors.primaryBgColor003
+              : DinColors.primaryBG002,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -127,10 +148,23 @@ class DinButton extends StatelessWidget {
     }
   }
 
-  TextStyle _getButtonTextStyle() {
+  TextStyle _getButtonTextStyle(
+    bool isDarkTheme,
+  ) {
     switch (type) {
       case DinButtonType.primary:
-        return DinTypography.textBoldStyle1;
+        return DinTypography.textBoldStyle1.copyWith(
+          color: isDarkTheme
+              ? DinColors.primaryColor001
+              : DinColors.primaryColor002,
+        );
+
+      case DinButtonType.secondary:
+        return DinTypography.textBoldStyle1.copyWith(
+          color: isDarkTheme
+              ? DinColors.secondaryColor001
+              : DinColors.primaryColor002,
+        );
 
       case DinButtonType.tertiary:
         return DinTypography.textBoldStyle2;

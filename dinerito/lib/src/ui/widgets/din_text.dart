@@ -1,7 +1,10 @@
+import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 
+import '../../infrastructure/helpers/din_colors.dart';
 import '../../infrastructure/helpers/din_typography.dart';
 import 'din_rich_text.dart';
+import 'din_text_span.dart';
 
 class DinText extends StatelessWidget {
   const DinText(
@@ -19,27 +22,31 @@ class DinText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.isDarkTheme;
+    Color color_ =
+        isDarkTheme ? DinColors.primaryColor002 : DinColors.primaryColor001;
+    TextStyle style_ = style ?? DinTypography.textLightStyle1;
+
     return isMoney
         ? DinRichText(
             '\$',
             principalStyle: style ?? DinTypography.moneyBoldSmallStyle1,
             children: [
-              TextSpan(
-                text: text,
+              DinTextSpan(
+                text,
                 style: DinTypography.moneyBoldMediumStyle1,
-              ),
-              TextSpan(
-                text: ',00',
+              ).build(context),
+              DinTextSpan(
+                ',00',
                 style: DinTypography.moneyBoldSmallStyle1,
-              ),
+              ).build(context),
             ],
           )
         : Text(
             text,
-            style: style ??
-                DinTypography.textLightStyle1.copyWith(
-                  color: color,
-                ),
+            style: style_.copyWith(
+              color: color ?? color_,
+            ),
           );
   }
 }

@@ -33,7 +33,7 @@ class RegisterPresenter {
         _interface.showError(error.message);
       },
       (LoginResponseModel response) {
-        _interface.setSesionToken(response.token);
+        _interface.setSession(response);
       },
     );
   }

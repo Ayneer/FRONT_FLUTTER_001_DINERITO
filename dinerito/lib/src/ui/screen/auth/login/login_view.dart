@@ -1,13 +1,18 @@
+import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:dinerito/src/ui/router/auth/register_router.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../infrastructure/helpers/din_colors.dart';
 import '../../../../infrastructure/helpers/din_size.dart';
 import '../../../../infrastructure/helpers/din_typography.dart';
 import '../../../../infrastructure/helpers/session/secure_storage_session.dart';
+import '../../../../infrastructure/models/auth/response/login_response_model.dart';
+import '../../../helpers/notifiers/app_notifier.dart';
 import '../../../router/home/home_router.dart';
 import '../../../widgets/din_alert.dart';
 import '../../../widgets/din_rich_text.dart';
+import '../../../widgets/din_text.dart';
+import '../../../widgets/din_text_span.dart';
 import 'helpers/argument.dart';
 import 'helpers/login_interface.dart';
 import 'helpers/login_presenter.dart';
@@ -41,8 +46,14 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.isDarkTheme;
+    final Color backgroundColor =
+        isDarkTheme ? DinColors.primaryBgColor004 : DinColors.primaryBG001;
+    final Color loginFormBackgroundColor =
+        isDarkTheme ? DinColors.primaryBgColor003 : DinColors.primaryBG002;
+
     return Scaffold(
-      backgroundColor: DinColors.primaryBG001,
+      backgroundColor: backgroundColor,
       body: ListView(children: [
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -55,14 +66,14 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
                   padding: const EdgeInsets.only(
                     top: 180,
                   ),
-                  child: Text(
+                  child: DinText(
                     'Dinerito',
                     style: DinTypography.titleBoldStyle1.copyWith(
                       height: 0.1,
                     ),
                   ),
                 ),
-                Text(
+                DinText(
                   'Gestiona tus préstamos facilmete',
                   style: DinTypography.subTitleMediumStyle1.copyWith(
                     height: 2,
@@ -73,18 +84,18 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
                     vertical: DinSize.xLarge,
                   ),
                   padding: const EdgeInsets.all(DinSize.paddingSmall),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(
                         DinSize.radiusMedium,
                       ),
                     ),
-                    color: DinColors.primaryBG002,
+                    color: loginFormBackgroundColor,
                   ),
                   width: double.infinity,
                   child: Column(
                     children: [
-                      Text(
+                      DinText(
                         'Accede a tu cuenta',
                         style: DinTypography.titleSemiBoldStyle1,
                       ),
@@ -119,7 +130,7 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
+                          DinText(
                             'Olvidé mi contraseña',
                             style: DinTypography.linkBoldStyle1,
                           ),
@@ -135,31 +146,18 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
                             '¿Aún no tienes una cuenta? ',
                             principalStyle: DinTypography.subTitleMediumStyle1,
                             children: [
-                              TextSpan(
-                                  text: 'Crear cuenta',
-                                  style: DinTypography.linkBoldStyle1,
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        RegisterRouter.routeName,
-                                      );
-                                    }),
+                              DinTextSpan(
+                                'Crear cuenta',
+                                isLink: true,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RegisterRouter.routeName,
+                                  );
+                                },
+                              ).build(context),
                             ],
                           ),
-                          // RichText(
-                          //   text: TextSpan(
-                          //     text: '¿Aún no tienes una cuenta? ',
-                          //     style: DinTypography.subTitleMediumStyle1,
-                          //     children: [
-                          //       TextSpan(
-                          //         text: 'Crear cuenta',
-                          //         style: DinTypography.linkBoldStyle1,
-                          //       ),
-                          //     ],
-                          //   ),
-                          //   selectionColor: Colors.black,
-                          // )
                         ],
                       ),
                     ],
@@ -174,11 +172,15 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
   }
 
   @override
-  setSesionToken(String token) async {
-    print(token);
+  setSession(LoginResponseModel session) async {
+    final AppNotifier appNotifier = context.read<AppNotifier>();
     Navigator.pushNamedAndRemoveUntil(
-        context, HomeRouter.routeName, (route) => false);
-    await SecureStorageSession().saveToken(token);
+      context,
+      HomeRouter.routeName,
+      (route) => false,
+    );
+    appNotifier.saveLogginUser(session);
+    await SecureStorageSession().saveToken(session.token);
   }
 
   @override

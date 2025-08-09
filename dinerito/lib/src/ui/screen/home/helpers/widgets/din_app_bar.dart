@@ -1,9 +1,11 @@
+import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../infrastructure/helpers/din_colors.dart';
 import '../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../infrastructure/helpers/din_typography.dart';
 import '../../../../widgets/din_button.dart';
+import '../../../../widgets/din_text.dart';
 
 class DinAppBar extends StatelessWidget {
   const DinAppBar({
@@ -15,6 +17,10 @@ class DinAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.isDarkTheme;
+    final Color iconColor =
+        isDarkTheme ? DinColors.primaryBG001 : DinColors.primaryColor001;
+        
     return Padding(
       padding: const EdgeInsets.only(
         top: DinSize.xMedium,
@@ -24,7 +30,7 @@ class DinAppBar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(
+            child: DinText(
               'Dinerito',
               style: DinTypography.titleBoldStyle2,
             ),
@@ -34,9 +40,9 @@ class DinAppBar extends StatelessWidget {
               top: DinSize.xSmall,
             ),
             child: DinButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.logout,
-                color: DinColors.primaryColor001,
+                color: iconColor,
                 size: DinSize.medium,
               ),
               onPressed: () async => await logout(),

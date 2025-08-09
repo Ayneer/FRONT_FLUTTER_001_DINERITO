@@ -12,27 +12,24 @@ class DinTypography {
   static const double _sizeMedium = 15;
   static const double _sizeLarge = 25;
 
-
   static final titleBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: 75,
-    color: DinColors.primaryColor001
+    color: DinColors.primaryColor001,
   );
-   static final titleBoldStyle2 = GoogleFonts.poppins(
-    fontWeight: _bold,
-    fontSize: _sizeLarge,
-    color: DinColors.primaryColor001
-  );
+  static final titleBoldStyle2 = GoogleFonts.poppins(
+      fontWeight: _bold,
+      fontSize: _sizeLarge,
+      color: DinColors.primaryColor001);
   static final titleSemiBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: 20,
   );
 
-
   static final subTitleMediumStyle1 = GoogleFonts.poppins(
     fontWeight: _medium,
     fontSize: 13,
-    color: DinColors.primaryColor003
+    color: DinColors.primaryColor003,
   );
 
   //BODY TEXT STYLES
@@ -44,41 +41,40 @@ class DinTypography {
   static final textBoldStyle2 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: _sizeMedium,
-    color: DinColors.primaryColor001
-  ); 
+    color: DinColors.primaryColor001,
+  );
   static final textLightStyle1 = GoogleFonts.poppins(
     fontWeight: _light,
     fontSize: _sizeMedium,
-    color: DinColors.primaryColor001
+    color: DinColors.primaryColor001,
   );
   static final textLightMsmallStyle1 = GoogleFonts.poppins(
     fontWeight: _light,
     fontSize: _sizeMsmall,
-    color: DinColors.primaryColor001
+    color: DinColors.primaryColor001,
   );
-
 
   static final linkMediumStyle1 = GoogleFonts.poppins(
     fontWeight: _medium,
     fontSize: 13,
     decoration: TextDecoration.underline,
-    color: DinColors.primaryColor003
+    color: DinColors.primaryColor003,
   );
   static final linkBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: 13,
-    decoration: TextDecoration.underline
+    decoration: TextDecoration.underline,
+    color: DinColors.primaryColor001,
   );
-
 
   static final moneyBoldSmallStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: _sizeSmall,
-    color: DinColors.primaryColor001
+    color: DinColors.primaryColor001,
   );
   static final moneyBoldMediumStyle1 = GoogleFonts.poppins(
     fontWeight: _medium,
     fontSize: _sizeMedium,
-    color: DinColors.primaryColor001
+    color: DinColors.primaryColor001,
   );
 }

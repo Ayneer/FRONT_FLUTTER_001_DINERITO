@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-// import '../../../../infrastructure/helpers/session/secure_storage_session.dart';
-
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
 
@@ -15,7 +12,6 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     super.initState();
-    // token = SecureStorageSession().getToken();
   }
 
   @override

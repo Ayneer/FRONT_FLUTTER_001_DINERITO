@@ -20,6 +20,8 @@ dependencies:
   dio: ^5.0.0
   envied: ^0.5.2
   email_validator: ^3.0.0
+  shared_preferences: ^2.2.2
+  provider: ^6.1.5
 
 dev_dependencies:
   flutter_test:

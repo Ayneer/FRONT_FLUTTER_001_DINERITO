@@ -1,14 +1,19 @@
+import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:dinerito/src/ui/router/auth/login_router.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../infrastructure/helpers/din_colors.dart';
 import '../../../../infrastructure/helpers/din_size.dart';
 import '../../../../infrastructure/helpers/din_typography.dart';
 import '../../../../infrastructure/helpers/session/secure_storage_session.dart';
+import '../../../../infrastructure/models/auth/response/login_response_model.dart';
+import '../../../helpers/notifiers/app_notifier.dart';
 import '../../../router/home/home_router.dart';
 import '../../../widgets/din_alert.dart';
 import '../../../widgets/din_rich_text.dart';
+import '../../../widgets/din_text.dart';
+import '../../../widgets/din_text_span.dart';
 import 'helpers/argument.dart';
 import 'helpers/register_interface.dart';
 import 'helpers/register_presenter.dart';
@@ -43,8 +48,14 @@ class _RegisterViewState extends State<RegisterView>
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.isDarkTheme;
+    final Color backgroundColor =
+        isDarkTheme ? DinColors.primaryBgColor004 : DinColors.primaryBG001;
+    final Color registerFormBackgroundColor =
+        isDarkTheme ? DinColors.primaryBgColor003 : DinColors.primaryBG002;
+
     return Scaffold(
-      backgroundColor: DinColors.primaryBG001,
+      backgroundColor: backgroundColor,
       body: ListView(children: [
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -57,14 +68,14 @@ class _RegisterViewState extends State<RegisterView>
                   padding: const EdgeInsets.only(
                     top: 180,
                   ),
-                  child: Text(
+                  child: DinText(
                     'Dinerito',
                     style: DinTypography.titleBoldStyle1.copyWith(
                       height: 0.1,
                     ),
                   ),
                 ),
-                Text(
+                DinText(
                   'Gestiona tus préstamos facilmete',
                   style: DinTypography.subTitleMediumStyle1.copyWith(
                     height: 2,
@@ -75,18 +86,18 @@ class _RegisterViewState extends State<RegisterView>
                     vertical: DinSize.xLarge,
                   ),
                   padding: const EdgeInsets.all(DinSize.paddingSmall),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(
                         DinSize.radiusMedium,
                       ),
                     ),
-                    color: DinColors.primaryBG002,
+                    color: registerFormBackgroundColor,
                   ),
                   width: double.infinity,
                   child: Column(
                     children: [
-                      Text(
+                      DinText(
                         'Crea tu cuenta',
                         style: DinTypography.titleSemiBoldStyle1,
                       ),
@@ -117,17 +128,16 @@ class _RegisterViewState extends State<RegisterView>
                             '¿Ya tienes una cuenta? ',
                             principalStyle: DinTypography.subTitleMediumStyle1,
                             children: [
-                              TextSpan(
-                                text: 'Ingresa aquí',
-                                style: DinTypography.linkBoldStyle1,
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      LoginRouter.routeName,
-                                    );
-                                  },
-                              ),
+                              DinTextSpan(
+                                'Ingresa aquí',
+                                isLink: true,
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    LoginRouter.routeName,
+                                  );
+                                },
+                              ).build(context),
                             ],
                           ),
                         ],
@@ -144,10 +154,12 @@ class _RegisterViewState extends State<RegisterView>
   }
 
   @override
-  setSesionToken(String token) async {
+  setSession(LoginResponseModel session) async {
+    final AppNotifier appNotifier = context.read<AppNotifier>();
     Navigator.pushNamedAndRemoveUntil(
         context, HomeRouter.routeName, (route) => false);
-    await SecureStorageSession().saveToken(token);
+    appNotifier.saveLogginUser(session);
+    await SecureStorageSession().saveToken(session.token);
   }
 
   @override

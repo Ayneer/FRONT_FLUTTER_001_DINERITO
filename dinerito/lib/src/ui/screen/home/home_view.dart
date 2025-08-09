@@ -1,6 +1,9 @@
+import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:dinerito/src/infrastructure/helpers/din_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../infrastructure/helpers/session/secure_storage_session.dart';
+import '../../helpers/notifiers/app_notifier.dart';
 import '../../router/auth/login_router.dart';
 import '../../router/home/dashboard_router.dart';
 import 'helpers/widgets/din_app_bar.dart';
@@ -16,11 +19,15 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.isDarkTheme;
+    final Color backgroundColor =
+        isDarkTheme ? DinColors.primaryBgColor004 : DinColors.primaryBG001;
+        
     return Scaffold(
-      backgroundColor: DinColors.secondaryBgColor001,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: DinColors.primaryBG002,
+        backgroundColor: DinColors.primaryBgColor003,
         flexibleSpace: DinAppBar(
           logout: _logout,
         ),
@@ -66,7 +73,9 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Future<void> _logout() async {
+    final AppNotifier appNotifier = context.read<AppNotifier>();
     await SecureStorageSession().cleanToken();
+    appNotifier.cleanLogginData();
     if (context.mounted) {
       Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
         LoginRouter.routeName,

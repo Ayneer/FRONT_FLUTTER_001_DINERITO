@@ -1,23 +1,28 @@
-class LoginResponseModel {
+import '../../../../domain/models/user_model.dart';
+import '../../../../configuration/interfaces/din_model_interface.dart';
+
+class LoginResponseModel implements DinModelInterface<LoginResponseModel> {
   LoginResponseModel({
     required this.token,
     required this.user,
   });
 
   final String token;
-  final Map<String, dynamic> user;
+  final UserEntity user;
 
-  static LoginResponseModel fromMap(Map<String, dynamic> map) {
+  @override
+  factory LoginResponseModel.fromMap(Map<String, dynamic> map) {
     return LoginResponseModel(
       token: map['token'] as String,
-      user: map['user'] as Map<String, dynamic>,
+      user: UserEntity.fromMap(map['user']),
     );
   }
 
-  static Map<String, dynamic> toMap(LoginResponseModel object) {
+  @override
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "token": object.token,
-      "user": object.user,
+      "token": token,
+      "user": user.toMap(),
     };
   }
 }

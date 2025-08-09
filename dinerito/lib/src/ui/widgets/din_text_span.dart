@@ -11,11 +11,13 @@ class DinTextSpan {
     this.style,
     this.onTap,
     this.isLink = false,
+    this.enableLink = true,
   });
   final String text;
   final TextStyle? style;
   final void Function()? onTap;
   final bool isLink;
+  final bool enableLink;
 
   InlineSpan build(BuildContext context) {
     final bool isDarkTheme = context.isDarkTheme;
@@ -29,7 +31,7 @@ class DinTextSpan {
       style: style_.copyWith(
         color: color_,
       ),
-      recognizer: TapGestureRecognizer()..onTap = onTap,
+      recognizer: TapGestureRecognizer()..onTap = enableLink ? onTap : null,
     );
   }
 }

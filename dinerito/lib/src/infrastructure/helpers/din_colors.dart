@@ -17,4 +17,6 @@ class DinColors {
  
   static const Color errorColor = Color(0xFFFF9898);
   static const Color successColor = Color.fromARGB(255, 46, 210, 120);
+
+  static const Color disableBgColor = Color.fromARGB(255, 188, 188, 188);
 }

@@ -8,11 +8,11 @@ import '../../screen/auth/login/login_view.dart';
 class LoginRouter {
   static const routeName = '/login';
 
-  static Widget getView() {
+  static Widget getView(BuildContext context) {
     return LoginView(
       arguments: LoginArgument(
         authUseCase: AuthUseCase(
-          AuthApi(),
+          AuthApi(context),
         ),
       ),
     );

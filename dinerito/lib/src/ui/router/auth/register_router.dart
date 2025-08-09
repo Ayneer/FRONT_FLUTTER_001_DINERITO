@@ -8,11 +8,11 @@ import '../../screen/auth/register/register_view.dart';
 class RegisterRouter {
   static const routeName = '/register';
 
-  static Widget getView() {
+  static Widget getView(BuildContext context) {
     return RegisterView(
       arguments: RegisterArgument(
         authUseCase: AuthUseCase(
-          AuthApi(),
+          AuthApi(context),
         ),
       ),
     );

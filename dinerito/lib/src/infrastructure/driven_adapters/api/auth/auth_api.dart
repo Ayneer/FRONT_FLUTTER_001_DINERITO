@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../configuration/env/env.dart';
 import '../../../../domain/gateways/auth/export.dart';
@@ -12,14 +13,16 @@ import '../../mocks/auth/login_mock.dart';
 import '../api.dart';
 
 class AuthApi implements AuthGateway {
-  AuthApi();
+  AuthApi(this.context);
   final env = Env.getEnv;
+  final BuildContext context;
 
   @override
   Future<Either<ErrorApiModel, LoginResponseModel>> login(
     LoginRequestModel request,
   ) async {
     final api = Api(
+      context,
       withAuth: false,
     );
     final response = await api.call(
@@ -41,6 +44,7 @@ class AuthApi implements AuthGateway {
   Future<Either<ErrorApiModel, LoginResponseModel>> register(
       RegisterRequestModel request) async {
     final api = Api(
+      context,
       withAuth: false,
     );
     final response = await api.call(

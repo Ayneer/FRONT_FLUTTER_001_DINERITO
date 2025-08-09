@@ -15,7 +15,11 @@ class DinInput extends StatelessWidget {
     this.onChanged,
     this.controller,
     this.labelStyle,
+    this.hintStyle,
     this.labelColor,
+    this.hintColor,
+    this.enable = true,
+    this.readOnly = false,
   });
 
   final String? hintText;
@@ -25,23 +29,32 @@ class DinInput extends StatelessWidget {
   final void Function(String?)? onChanged;
   final TextEditingController? controller;
   final TextStyle? labelStyle;
+  final TextStyle? hintStyle;
   final Color? labelColor;
+  final Color? hintColor;
+  final bool enable;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     final bool isDarkTheme = context.isDarkTheme;
     Color labelColor_ =
         isDarkTheme ? DinColors.primaryColor002 : DinColors.primaryColor001;
-    TextStyle labelStyle_ = labelStyle ??
-        DinTypography.textLightStyle1;
+    TextStyle labelStyle_ = labelStyle ?? DinTypography.textLightStyle1;
+    TextStyle hintStyle_ = hintStyle ?? DinTypography.textLightStyle1;
 
     return TextFormField(
+      enabled: enable,
+      readOnly: readOnly,
       obscureText: type == DinTextType.text ? false : true,
       decoration: InputDecoration(
         hintText: hintText,
         labelText: title,
         labelStyle: labelStyle_.copyWith(
           color: labelColor ?? labelColor_,
+        ),
+        hintStyle: hintStyle_.copyWith(
+          color: hintColor ?? labelColor_,
         ),
       ),
       validator: validator,

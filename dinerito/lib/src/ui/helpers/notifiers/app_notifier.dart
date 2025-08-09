@@ -12,10 +12,12 @@ class AppNotifier with ChangeNotifier {
 
   ThemeMode _themeMode = ThemeMode.system;
   LoginResponseModel? _userToken;
+  bool _isLoading = false;
 
   ThemeMode get themeMode => _themeMode;
   LoginResponseModel? get session => _userToken;
   UserEntity? get user => _userToken?.user;
+  bool get isLoading => _isLoading;
 
   Future<void> loadUserPreferences() async {
     _themeMode = await _userPreferencesService.getThemeMode();
@@ -35,13 +37,20 @@ class AppNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  setIsLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
+
   cleanLogginData() {
     _userToken = null;
+    _isLoading = false;
     notifyListeners();
   }
 
   cleanAll() async {
     _userToken = null;
+    _isLoading = false;
     _themeMode = await _userPreferencesService.getThemeMode();
     notifyListeners();
   }

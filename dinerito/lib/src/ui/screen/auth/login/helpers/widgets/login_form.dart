@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../../infrastructure/helpers/enum/din_text_type.dart';
+import '../../../../../helpers/notifiers/app_notifier.dart';
 import '../../../../../helpers/utils.dart';
 import '../../../../../widgets/din_button.dart';
 import '../../../../../widgets/din_input.dart';
@@ -25,9 +27,13 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool enableLoginBtn = false;
 
   @override
   Widget build(BuildContext context) {
+    final AppNotifier appNotifier = context.watch<AppNotifier>();
+    final bool isLoading = appNotifier.isLoading;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -43,7 +49,11 @@ class _LoginFormState extends State<LoginForm> {
                     : 'Ingrese un correo valido.',
               );
             },
+            onChanged: (p0) {
+              enableLoginButton();
+            },
             controller: usernameController,
+            enable: !isLoading,
           ),
           const SizedBox(
             height: DinSize.small,
@@ -63,20 +73,27 @@ class _LoginFormState extends State<LoginForm> {
                 },
               );
             },
+            onChanged: (p0) {
+              enableLoginButton();
+            },
             controller: passwordController,
+            enable: !isLoading,
           ),
           const SizedBox(
             height: DinSize.medium,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: DinButton(
-                  text: 'Ingresar',
-                  onPressed: _login,
-                  enable: enableLoginButton(),
-                ),
-              ),
+              appNotifier.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Expanded(
+                      child: DinButton(
+                        text: 'Ingresar',
+                        onPressed: _login,
+                        enable: enableLoginBtn,
+                      ),
+                    ),
             ],
           ),
         ],
@@ -104,11 +121,16 @@ class _LoginFormState extends State<LoginForm> {
     return validate != null ? validate(value.trim()) : null;
   }
 
-  bool enableLoginButton() {
+  void enableLoginButton() {
     if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
-      return false;
+      setState(() {
+        enableLoginBtn = false;
+      });
+      return;
     }
-    return true;
+    setState(() {
+      enableLoginBtn = true;
+    });
   }
 
   @override

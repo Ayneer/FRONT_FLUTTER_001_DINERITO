@@ -46,6 +46,8 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
 
   @override
   Widget build(BuildContext context) {
+    final AppNotifier appNotifier = context.watch<AppNotifier>();
+    final bool isLoading = appNotifier.isLoading;
     final bool isDarkTheme = context.isDarkTheme;
     final Color backgroundColor =
         isDarkTheme ? DinColors.primaryBgColor004 : DinColors.primaryBG001;
@@ -130,9 +132,10 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          DinText(
+                          DinRichText(
                             'Olvidé mi contraseña',
-                            style: DinTypography.linkBoldStyle1,
+                            isLink: true,
+                            enableLink: !isLoading,
                           ),
                         ],
                       ),
@@ -149,6 +152,7 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
                               DinTextSpan(
                                 'Crear cuenta',
                                 isLink: true,
+                                enableLink: !isLoading,
                                 onTap: () {
                                   Navigator.pushNamed(
                                     context,

@@ -71,13 +71,13 @@ class _MyAppState extends State<MyApp> {
 
               switch (route) {
                 case LoginRouter.routeName:
-                  return LoginRouter.getView();
+                  return LoginRouter.getView(context);
                 case RegisterRouter.routeName:
-                  return RegisterRouter.getView();
+                  return RegisterRouter.getView(context);
                 case HomeRouter.routeName:
                   return HomeRouter.getView();
                 default:
-                  return LoginRouter.getView();
+                  return LoginRouter.getView(context);
               }
             },
           ),

@@ -1,4 +1,5 @@
 import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
+import 'package:dinerito/src/ui/widgets/din_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../infrastructure/helpers/din_colors.dart';
@@ -16,6 +17,7 @@ class DinButton extends StatelessWidget {
     this.enable = true,
     this.icon,
     this.alignment,
+    this.textSize,
     required this.onPressed,
   });
 
@@ -27,6 +29,7 @@ class DinButton extends StatelessWidget {
   final bool enable;
   final Widget? icon;
   final Alignment? alignment;
+  final double? textSize;
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +52,13 @@ class DinButton extends StatelessWidget {
   ) {
     return icon != null
         ? TextButton(
-            onPressed: onPressed,
+            onPressed: enable ? onPressed : null,
             style: _getButtonStyle(
               onlyIcon,
               isDarkTheme,
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 icon!,
                 text.isNotEmpty
@@ -63,9 +66,10 @@ class DinButton extends StatelessWidget {
                         padding: const EdgeInsets.only(
                           left: DinSize.xSmall,
                         ),
-                        child: Text(
+                        child: DinText(
                           text,
                           style: _getButtonTextStyle(isDarkTheme),
+                          color: _getButtonTextStyle(isDarkTheme).color,
                         ),
                       )
                     : const SizedBox.shrink(),
@@ -73,14 +77,15 @@ class DinButton extends StatelessWidget {
             ),
           )
         : TextButton(
-            onPressed: onPressed,
+            onPressed: enable ? onPressed : null,
             style: _getButtonStyle(
               onlyIcon,
               isDarkTheme,
             ),
-            child: Text(
+            child: DinText(
               text,
               style: _getButtonTextStyle(isDarkTheme),
+              color: _getButtonTextStyle(isDarkTheme).color,
             ),
           );
   }
@@ -90,12 +95,13 @@ class DinButton extends StatelessWidget {
     bool isDarkTheme,
   ) {
     final Alignment alignment_ =
-        onlyIcon ? Alignment.topCenter : Alignment.center;
+        onlyIcon ? Alignment.topCenter : (alignment ?? Alignment.center);
     final DinButtonType type_ = onlyIcon ? DinButtonType.transparent : type;
 
     switch (type_) {
       case DinButtonType.primary:
         return TextButton.styleFrom(
+          disabledBackgroundColor: DinColors.disableBgColor,
           alignment: alignment_,
           backgroundColor: isDarkTheme
               ? DinColors.primaryBG002
@@ -108,6 +114,7 @@ class DinButton extends StatelessWidget {
       case DinButtonType.secondary:
         return TextButton.styleFrom(
           alignment: alignment_,
+          disabledBackgroundColor: DinColors.disableBgColor,
           padding: onlyIcon ? EdgeInsets.zero : null,
           backgroundColor: isDarkTheme
               ? DinColors.primaryBG002
@@ -120,6 +127,7 @@ class DinButton extends StatelessWidget {
       case DinButtonType.tertiary:
         return TextButton.styleFrom(
           alignment: alignment_,
+          disabledBackgroundColor: DinColors.disableBgColor,
           padding: onlyIcon ? EdgeInsets.zero : null,
           backgroundColor: isDarkTheme
               ? DinColors.primaryBgColor003
@@ -168,6 +176,11 @@ class DinButton extends StatelessWidget {
 
       case DinButtonType.tertiary:
         return DinTypography.textBoldStyle2;
+
+      case DinButtonType.transparent:
+        return DinTypography.textBoldStyle1.copyWith(
+          fontSize: textSize ?? DinTypography.sizeMsmall,
+        );
 
       default:
         return DinTypography.textBoldStyle1;

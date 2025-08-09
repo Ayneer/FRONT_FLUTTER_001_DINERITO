@@ -7,10 +7,10 @@ class DinTypography {
   static const FontWeight _light = FontWeight.w300;
   static const FontWeight _medium = FontWeight.w500;
   static const FontWeight _bold = FontWeight.w700;
-  static const double _sizeSmall = 10;
-  static const double _sizeMsmall = 13;
-  static const double _sizeMedium = 15;
-  static const double _sizeLarge = 25;
+  static const double sizeSmall = 10;
+  static const double sizeMsmall = 13;
+  static const double sizeMedium = 15;
+  static const double sizeLarge = 25;
 
   static final titleBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
@@ -19,7 +19,7 @@ class DinTypography {
   );
   static final titleBoldStyle2 = GoogleFonts.poppins(
       fontWeight: _bold,
-      fontSize: _sizeLarge,
+      fontSize: sizeLarge,
       color: DinColors.primaryColor001);
   static final titleSemiBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
@@ -35,22 +35,21 @@ class DinTypography {
   //BODY TEXT STYLES
   static final textBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
-    fontSize: _sizeMedium,
-    color: DinColors.primaryColor002,
+    fontSize: sizeMedium,
   );
   static final textBoldStyle2 = GoogleFonts.poppins(
     fontWeight: _bold,
-    fontSize: _sizeMedium,
+    fontSize: sizeMedium,
     color: DinColors.primaryColor001,
   );
   static final textLightStyle1 = GoogleFonts.poppins(
     fontWeight: _light,
-    fontSize: _sizeMedium,
+    fontSize: sizeMedium,
     color: DinColors.primaryColor001,
   );
   static final textLightMsmallStyle1 = GoogleFonts.poppins(
     fontWeight: _light,
-    fontSize: _sizeMsmall,
+    fontSize: sizeMsmall,
     color: DinColors.primaryColor001,
   );
 
@@ -69,12 +68,12 @@ class DinTypography {
 
   static final moneyBoldSmallStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
-    fontSize: _sizeSmall,
+    fontSize: sizeSmall,
     color: DinColors.primaryColor001,
   );
   static final moneyBoldMediumStyle1 = GoogleFonts.poppins(
     fontWeight: _medium,
-    fontSize: _sizeMedium,
+    fontSize: sizeMedium,
     color: DinColors.primaryColor001,
   );
 }

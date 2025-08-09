@@ -1,4 +1,5 @@
 import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
+import 'package:dinerito/src/infrastructure/helpers/enum/din_button_type.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../infrastructure/helpers/din_colors.dart';
@@ -40,6 +41,9 @@ class DinAppBar extends StatelessWidget {
               top: DinSize.xSmall,
             ),
             child: DinButton(
+              type: DinButtonType.transparent,
+              alignment: Alignment.center,
+              text: 'Salir',
               icon: Icon(
                 Icons.logout,
                 color: iconColor,

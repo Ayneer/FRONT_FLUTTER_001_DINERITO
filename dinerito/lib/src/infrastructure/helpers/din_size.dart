@@ -8,7 +8,11 @@ class DinSize {
   static const double xLarge = 50;
 
   static const double paddingXsmall = 20;
+  static const double paddingMsmall = 25;
   static const double paddingSmall = 30;
+  static const double paddingMedium = 40;
 
   static const double radiusMedium = 16;
+
+  static const double btnLarge = 150;
 }

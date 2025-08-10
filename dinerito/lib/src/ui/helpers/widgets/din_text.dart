@@ -1,8 +1,8 @@
 import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 
-import '../../infrastructure/helpers/din_colors.dart';
-import '../../infrastructure/helpers/din_typography.dart';
+import '../../../infrastructure/helpers/din_colors.dart';
+import '../../../infrastructure/helpers/din_typography.dart';
 import 'din_rich_text.dart';
 import 'din_text_span.dart';
 

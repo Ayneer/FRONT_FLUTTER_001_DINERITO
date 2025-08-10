@@ -2,8 +2,8 @@ import 'package:dinerito/src/configuration/extensions/build_context_extension.da
 import 'package:dinerito/src/infrastructure/helpers/din_colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../infrastructure/helpers/din_typography.dart';
-import '../../infrastructure/helpers/enum/din_text_type.dart';
+import '../../../infrastructure/helpers/din_typography.dart';
+import '../../../infrastructure/helpers/enum/din_text_type.dart';
 
 class DinInput extends StatelessWidget {
   const DinInput({

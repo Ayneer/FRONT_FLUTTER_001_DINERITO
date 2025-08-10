@@ -12,20 +12,28 @@ class DinTypography {
   static const double sizeMedium = 15;
   static const double sizeLarge = 25;
 
+  //TITLE TEXT STYLES
   static final titleBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: 75,
     color: DinColors.primaryColor001,
   );
   static final titleBoldStyle2 = GoogleFonts.poppins(
-      fontWeight: _bold,
-      fontSize: sizeLarge,
-      color: DinColors.primaryColor001);
+      fontWeight: _bold, fontSize: sizeLarge, color: DinColors.primaryColor001);
   static final titleSemiBoldStyle1 = GoogleFonts.poppins(
     fontWeight: _bold,
     fontSize: 20,
   );
+  static final titleMediumStyle1 = GoogleFonts.poppins(
+    fontWeight: _medium,
+    fontSize: sizeMedium,
+  );
+  static final titleMsmallLightStyle = GoogleFonts.poppins(
+    fontWeight: _light,
+    fontSize: sizeMsmall,
+  );
 
+  //SUB-TITLE TEXT STYLES
   static final subTitleMediumStyle1 = GoogleFonts.poppins(
     fontWeight: _medium,
     fontSize: 13,

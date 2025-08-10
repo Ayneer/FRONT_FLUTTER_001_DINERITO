@@ -1,11 +1,11 @@
 import 'package:dinerito/src/configuration/extensions/build_context_extension.dart';
-import 'package:dinerito/src/ui/widgets/din_text.dart';
+import 'package:dinerito/src/ui/helpers/widgets/din_text.dart';
 import 'package:flutter/material.dart';
 
-import '../../infrastructure/helpers/din_colors.dart';
-import '../../infrastructure/helpers/din_size.dart';
-import '../../infrastructure/helpers/din_typography.dart';
-import '../../infrastructure/helpers/enum/din_button_type.dart';
+import '../../../infrastructure/helpers/din_colors.dart';
+import '../../../infrastructure/helpers/din_size.dart';
+import '../../../infrastructure/helpers/din_typography.dart';
+import '../../../infrastructure/helpers/enum/din_button_type.dart';
 
 class DinButton extends StatelessWidget {
   const DinButton({
@@ -18,6 +18,8 @@ class DinButton extends StatelessWidget {
     this.icon,
     this.alignment,
     this.textSize,
+    this.padding,
+    this.backgroundColor,
     required this.onPressed,
   });
 
@@ -30,6 +32,8 @@ class DinButton extends StatelessWidget {
   final Widget? icon;
   final Alignment? alignment;
   final double? textSize;
+  final EdgeInsets? padding;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -94,18 +98,22 @@ class DinButton extends StatelessWidget {
     bool onlyIcon,
     bool isDarkTheme,
   ) {
-    final Alignment alignment_ =
-        onlyIcon ? Alignment.topCenter : (alignment ?? Alignment.center);
+    final Alignment alignment_ = onlyIcon
+        ? (alignment ?? Alignment.topCenter)
+        : (alignment ?? Alignment.center);
     final DinButtonType type_ = onlyIcon ? DinButtonType.transparent : type;
+    final padding_ = padding ?? (onlyIcon ? EdgeInsets.zero : null);
 
     switch (type_) {
       case DinButtonType.primary:
         return TextButton.styleFrom(
           disabledBackgroundColor: DinColors.disableBgColor,
           alignment: alignment_,
-          backgroundColor: isDarkTheme
-              ? DinColors.primaryBG002
-              : DinColors.primaryBgColor003,
+          padding: padding_,
+          backgroundColor: backgroundColor ??
+              (isDarkTheme
+                  ? DinColors.primaryBG002
+                  : DinColors.primaryBgColor003),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -115,10 +123,11 @@ class DinButton extends StatelessWidget {
         return TextButton.styleFrom(
           alignment: alignment_,
           disabledBackgroundColor: DinColors.disableBgColor,
-          padding: onlyIcon ? EdgeInsets.zero : null,
-          backgroundColor: isDarkTheme
-              ? DinColors.primaryBG002
-              : DinColors.secondaryColor001,
+          padding: padding_,
+          backgroundColor: backgroundColor ??
+              (isDarkTheme
+                  ? DinColors.primaryBG002
+                  : DinColors.secondaryColor001),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -128,10 +137,11 @@ class DinButton extends StatelessWidget {
         return TextButton.styleFrom(
           alignment: alignment_,
           disabledBackgroundColor: DinColors.disableBgColor,
-          padding: onlyIcon ? EdgeInsets.zero : null,
-          backgroundColor: isDarkTheme
-              ? DinColors.primaryBgColor003
-              : DinColors.primaryBG002,
+          padding: padding_,
+          backgroundColor: backgroundColor ??
+              (isDarkTheme
+                  ? DinColors.primaryBgColor003
+                  : DinColors.primaryBG002),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -140,15 +150,26 @@ class DinButton extends StatelessWidget {
       case DinButtonType.transparent:
         return TextButton.styleFrom(
           alignment: alignment_,
-          padding: onlyIcon ? EdgeInsets.zero : null,
-          minimumSize: onlyIcon ? Size.zero : null,
+          padding: padding_,
           backgroundColor: DinColors.transparent,
+        );
+
+      case DinButtonType.danger:
+        return TextButton.styleFrom(
+          alignment: alignment_,
+          disabledBackgroundColor: DinColors.disableBgColor,
+          padding: padding_,
+          backgroundColor: backgroundColor ?? DinColors.errorColor,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
         );
 
       default:
         return TextButton.styleFrom(
           alignment: alignment,
-          backgroundColor: DinColors.primaryColor001,
+          backgroundColor: backgroundColor ?? DinColors.primaryColor001,
+          padding: padding_,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -180,6 +201,11 @@ class DinButton extends StatelessWidget {
       case DinButtonType.transparent:
         return DinTypography.textBoldStyle1.copyWith(
           fontSize: textSize ?? DinTypography.sizeMsmall,
+        );
+
+      case DinButtonType.danger:
+        return DinTypography.textBoldStyle1.copyWith(
+          color: DinColors.primaryColor002,
         );
 
       default:

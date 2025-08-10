@@ -3,4 +3,5 @@ enum DinButtonType {
   secondary,
   tertiary,
   transparent,
+  danger,
 }

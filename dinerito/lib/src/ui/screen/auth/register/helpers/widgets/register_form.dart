@@ -1,12 +1,14 @@
-import 'package:dinerito/src/ui/widgets/din_text.dart';
+import 'package:dinerito/src/ui/helpers/widgets/din_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../infrastructure/helpers/din_colors.dart';
 import '../../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../../infrastructure/helpers/enum/din_text_type.dart';
+import '../../../../../helpers/notifiers/app_notifier.dart';
 import '../../../../../helpers/utils.dart';
-import '../../../../../widgets/din_button.dart';
-import '../../../../../widgets/din_input.dart';
+import '../../../../../helpers/widgets/din_button.dart';
+import '../../../../../helpers/widgets/din_input.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -35,9 +37,13 @@ class _RegisterFormState extends State<RegisterForm> {
   bool goodPassSize = false;
   bool goodSpecialCharacter = false;
   bool goodCapitalLetter = false;
+  bool enableBtnCreate = false;
 
   @override
   Widget build(BuildContext context) {
+    final AppNotifier appNotifier = context.watch<AppNotifier>();
+    final bool isLoading = appNotifier.isLoading;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -60,6 +66,10 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             },
             controller: firstNameController,
+            onChanged: (p0) {
+              enableLoginButton();
+            },
+            enable: !isLoading,
           ),
           DinInput(
             title: 'Apellidos',
@@ -79,6 +89,10 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             },
             controller: lastNameController,
+            onChanged: (p0) {
+              enableLoginButton();
+            },
+            enable: !isLoading,
           ),
           DinInput(
             title: 'Correo electronico',
@@ -92,6 +106,10 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             },
             controller: emailController,
+            onChanged: (p0) {
+              enableLoginButton();
+            },
+            enable: !isLoading,
           ),
           DinInput(
             title: 'Contraseña',
@@ -108,8 +126,12 @@ class _RegisterFormState extends State<RegisterForm> {
                 },
               );
             },
-            onChanged: (String? password) => validatePassword(),
+            onChanged: (String? password) {
+              validatePassword();
+              enableLoginButton();
+            },
             controller: passwordController,
+            enable: !isLoading,
           ),
           const SizedBox(
             height: DinSize.small,
@@ -129,6 +151,10 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             },
             controller: confirmPasswordController,
+            onChanged: (p0) {
+              enableLoginButton();
+            },
+            enable: !isLoading,
           ),
           const SizedBox(
             height: DinSize.small,
@@ -179,14 +205,17 @@ class _RegisterFormState extends State<RegisterForm> {
             height: DinSize.medium,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: DinButton(
-                  text: 'Crear',
-                  onPressed: _signUp,
-                  enable: enableLoginButton(),
-                ),
-              ),
+              isLoading
+                  ? const CircularProgressIndicator()
+                  : Expanded(
+                      child: DinButton(
+                        text: 'Crear',
+                        onPressed: _signUp,
+                        enable: enableBtnCreate,
+                      ),
+                    ),
             ],
           ),
         ],
@@ -216,15 +245,20 @@ class _RegisterFormState extends State<RegisterForm> {
     return validate != null ? validate(value) : null;
   }
 
-  bool enableLoginButton() {
+  void enableLoginButton() {
     if (firstNameController.text.trim().isEmpty ||
         lastNameController.text.trim().isEmpty ||
         emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty ||
         confirmPasswordController.text.trim().isEmpty) {
-      return false;
+      setState(() {
+        enableBtnCreate = false;
+      });
+      return;
     }
-    return true;
+    setState(() {
+      enableBtnCreate = true;
+    });
   }
 
   void validatePassword() {

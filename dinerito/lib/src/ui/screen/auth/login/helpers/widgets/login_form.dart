@@ -5,8 +5,8 @@ import '../../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../../infrastructure/helpers/enum/din_text_type.dart';
 import '../../../../../helpers/notifiers/app_notifier.dart';
 import '../../../../../helpers/utils.dart';
-import '../../../../../widgets/din_button.dart';
-import '../../../../../widgets/din_input.dart';
+import '../../../../../helpers/widgets/din_button.dart';
+import '../../../../../helpers/widgets/din_input.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({

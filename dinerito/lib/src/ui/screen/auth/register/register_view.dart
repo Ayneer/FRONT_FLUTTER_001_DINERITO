@@ -9,11 +9,12 @@ import '../../../../infrastructure/helpers/din_typography.dart';
 import '../../../../infrastructure/helpers/session/secure_storage_session.dart';
 import '../../../../infrastructure/models/auth/response/login_response_model.dart';
 import '../../../helpers/notifiers/app_notifier.dart';
+import '../../../helpers/widgets/din_page_title.dart';
 import '../../../router/home/home_router.dart';
-import '../../../widgets/din_alert.dart';
-import '../../../widgets/din_rich_text.dart';
-import '../../../widgets/din_text.dart';
-import '../../../widgets/din_text_span.dart';
+import '../../../helpers/widgets/din_alert.dart';
+import '../../../helpers/widgets/din_rich_text.dart';
+import '../../../helpers/widgets/din_text.dart';
+import '../../../helpers/widgets/din_text_span.dart';
 import 'helpers/argument.dart';
 import 'helpers/register_interface.dart';
 import 'helpers/register_presenter.dart';
@@ -48,6 +49,8 @@ class _RegisterViewState extends State<RegisterView>
 
   @override
   Widget build(BuildContext context) {
+    final AppNotifier appNotifier = context.watch<AppNotifier>();
+    final bool isLoading = appNotifier.isLoading;
     final bool isDarkTheme = context.isDarkTheme;
     final Color backgroundColor =
         isDarkTheme ? DinColors.primaryBgColor004 : DinColors.primaryBG001;
@@ -97,9 +100,12 @@ class _RegisterViewState extends State<RegisterView>
                   width: double.infinity,
                   child: Column(
                     children: [
-                      DinText(
-                        'Crea tu cuenta',
-                        style: DinTypography.titleSemiBoldStyle1,
+                      DinPageTitle(
+                        title: 'Crea tu cuenta',
+                        rightIcon: null,
+                        onPressedLeftIcon: () {
+                          Navigator.pop(context);
+                        },
                       ),
                       errorMessage.isNotEmpty
                           ? Visibility(
@@ -137,6 +143,7 @@ class _RegisterViewState extends State<RegisterView>
                                     LoginRouter.routeName,
                                   );
                                 },
+                                enableLink: !isLoading,
                               ).build(context),
                             ],
                           ),
@@ -160,6 +167,7 @@ class _RegisterViewState extends State<RegisterView>
         context, HomeRouter.routeName, (route) => false);
     appNotifier.saveLogginUser(session);
     await SecureStorageSession().saveToken(session.token);
+    appNotifier.setIsLoading(false);
   }
 
   @override

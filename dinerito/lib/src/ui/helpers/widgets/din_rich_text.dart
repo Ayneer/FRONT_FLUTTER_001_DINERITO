@@ -2,8 +2,8 @@ import 'package:dinerito/src/configuration/extensions/build_context_extension.da
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../infrastructure/helpers/din_colors.dart';
-import '../../infrastructure/helpers/din_typography.dart';
+import '../../../infrastructure/helpers/din_colors.dart';
+import '../../../infrastructure/helpers/din_typography.dart';
 
 class DinRichText extends StatelessWidget {
   const DinRichText(

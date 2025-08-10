@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../../../infrastructure/helpers/din_colors.dart';
 import '../../../../../infrastructure/helpers/din_size.dart';
 import '../../../../../infrastructure/helpers/din_typography.dart';
-import '../../../../widgets/din_button.dart';
-import '../../../../widgets/din_text.dart';
+import '../../../../helpers/widgets/din_button.dart';
+import '../../../../helpers/widgets/din_text.dart';
 
 class DinAppBar extends StatelessWidget {
   const DinAppBar({

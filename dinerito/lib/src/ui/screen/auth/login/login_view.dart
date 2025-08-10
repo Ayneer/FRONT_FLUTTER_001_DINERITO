@@ -9,10 +9,10 @@ import '../../../../infrastructure/helpers/session/secure_storage_session.dart';
 import '../../../../infrastructure/models/auth/response/login_response_model.dart';
 import '../../../helpers/notifiers/app_notifier.dart';
 import '../../../router/home/home_router.dart';
-import '../../../widgets/din_alert.dart';
-import '../../../widgets/din_rich_text.dart';
-import '../../../widgets/din_text.dart';
-import '../../../widgets/din_text_span.dart';
+import '../../../helpers/widgets/din_alert.dart';
+import '../../../helpers/widgets/din_rich_text.dart';
+import '../../../helpers/widgets/din_text.dart';
+import '../../../helpers/widgets/din_text_span.dart';
 import 'helpers/argument.dart';
 import 'helpers/login_interface.dart';
 import 'helpers/login_presenter.dart';
@@ -185,6 +185,7 @@ class _LoginViewState extends State<LoginView> implements LoginInterface {
     );
     appNotifier.saveLogginUser(session);
     await SecureStorageSession().saveToken(session.token);
+    appNotifier.setIsLoading(false);
   }
 
   @override

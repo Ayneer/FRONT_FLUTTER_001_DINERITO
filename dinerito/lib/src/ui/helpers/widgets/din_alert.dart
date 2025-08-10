@@ -1,10 +1,10 @@
 import 'package:dinerito/src/infrastructure/helpers/din_colors.dart';
 import 'package:dinerito/src/infrastructure/helpers/din_size.dart';
-import 'package:dinerito/src/ui/widgets/din_button.dart';
-import 'package:dinerito/src/ui/widgets/din_text.dart';
+import 'package:dinerito/src/ui/helpers/widgets/din_button.dart';
+import 'package:dinerito/src/ui/helpers/widgets/din_text.dart';
 import 'package:flutter/material.dart';
 
-import '../../infrastructure/helpers/din_typography.dart';
+import '../../../infrastructure/helpers/din_typography.dart';
 
 class DinAlert extends StatefulWidget {
   const DinAlert(

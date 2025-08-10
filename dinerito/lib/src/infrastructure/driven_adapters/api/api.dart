@@ -59,8 +59,6 @@ class Api {
         detail: e.toString(),
         code: codeApiError,
       ));
-    } finally {
-      appNotifier.setIsLoading(false);
     }
   }
 
